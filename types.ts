@@ -3,7 +3,18 @@ import { Timestamp } from 'firebase/firestore';
 export interface UserProfile {
   username: string;
   netWorth: number;
+  liquidPhi?: number;
   updatedAt: Timestamp;
+  isBanned?: boolean; 
+}
+
+export interface UserPrivateData {
+  cash: number;
+  createdAt: Timestamp;
+  email?: string;
+  isBanned?: boolean;
+  role?: 'admin' | 'worker';
+  bonusClaimed?: boolean;
 }
 
 export interface Character {
@@ -15,6 +26,14 @@ export interface Character {
   tier: number;
   imageUrl?: string;
   updatedAt?: Timestamp;
+  isWaifu?: boolean;
+  // Popularity System
+  gender?: 'Male' | 'Female';
+  popularityVotes?: number;
+  prevPopularityRank?: number;
+  // Strongest System
+  strengthVotes?: number;
+  prevStrengthRank?: number;
 }
 
 export interface GameSettings {
@@ -25,10 +44,14 @@ export interface GameSettings {
   cooldownSeconds: number;
   maxSharesPerUser: number;
   frozenCharacters: string[];
+  popularityVotingEnabled?: boolean;
+  strongestVotingEnabled?: boolean;
+  bannerImageUrl?: string;
   event?: {
-    name: string;
     active: boolean;
-    crewMultipliers: Record<string, number>;
+    name: string;
+    description: string;
+    priceMultiplier: number;
   };
 }
 
@@ -48,4 +71,16 @@ export interface Trade {
 
 export interface Holding {
   shares: number;
+}
+
+export interface Announcement {
+  id: string;
+  title: string;
+  body: string;
+  type: 'market' | 'character' | 'event' | 'system';
+  relatedCharacterId?: string;
+  characterName?: string;
+  priceChange?: number;
+  createdAt: Timestamp;
+  createdBy: string;
 }

@@ -1,8 +1,9 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
 
-// Configuration from user file
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
 const firebaseConfig = {
   apiKey: "AIzaSyCAxUFLCVqRSmxG1x4_b7cRz1VkLfbmTSY",
   authDomain: "stockismweb.firebaseapp.com",
@@ -13,9 +14,11 @@ const firebaseConfig = {
   measurementId: "G-L8KZ6QSNC0"
 };
 
+// Initialize via named export (standard modular SDK pattern)
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const storage = getStorage(app);
 
 export const slugify = (name: string) => {
   return String(name || "").toLowerCase().trim()

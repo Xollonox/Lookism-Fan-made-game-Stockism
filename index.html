@@ -1,64 +1,224 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Stockism</title>
+    
+    <title>Stockism – Elite Lookism Trading Terminal</title>
+    <meta name="description" content="The ultimate Lookism fan trading market. Premium character trading and real-time rankings." />
+    <meta name="theme-color" content="#050505" />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              bg0: '#070A14',
-              bg1: '#0A1022',
-              card: 'rgba(255,255,255,0.06)',
-              line: 'rgba(255,255,255,0.10)',
-              brand: '#5B63FF',
-              brand2: '#8B5BFF',
-              good: '#2BD4A7',
-              bad: '#FF4D6D',
-              warn: '#FFCF5C',
-              muted: '#AAB4FF',
+              bg0: 'var(--color-bg0)',
+              bg1: 'var(--color-bg1)',
+              card: 'var(--color-card)',
+              line: 'var(--color-line)',
+              brand: 'var(--color-brand)',
+              brand2: 'var(--color-brand2)',
+              good: 'var(--color-good)',
+              bad: 'var(--color-bad)',
+              warn: 'var(--color-warn)',
+              muted: 'var(--color-muted)',
             },
             fontFamily: {
-              sans: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+              sans: ['Impact', 'Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'Fira Code', 'ui-monospace', 'monospace'],
+              body: ['Inter', 'system-ui', 'sans-serif'],
             },
             animation: {
-              'spin-slow': 'spin 3s linear infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'shimmer': 'shimmer 2s linear infinite',
+              'fade-in-up': 'fadeInUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+            },
+            keyframes: {
+              shimmer: {
+                '0%': { backgroundPosition: '-200% 0' },
+                '100%': { backgroundPosition: '200% 0' },
+              },
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(12px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
             }
           }
         }
       }
     </script>
     <style>
-      body {
-        background-color: #070A14;
-        background-image: 
-          radial-gradient(1100px 900px at 10% -10%, rgba(91,99,255,0.35) 0%, rgba(7,10,20,0) 55%),
-          radial-gradient(900px 700px at 105% 10%, rgba(255,77,109,0.18) 0%, rgba(7,10,20,0) 55%),
-          radial-gradient(900px 700px at 80% 110%, rgba(43,212,167,0.16) 0%, rgba(7,10,20,0) 50%);
-        background-attachment: fixed;
-        color: #EEF1FF;
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+      :root {
+        /* Premium Dark Theme - Glass Terminal */
+        --color-bg0: #050505;
+        --color-bg1: rgba(20, 20, 23, 0.6);
+        --color-card: rgba(30, 30, 35, 0.4);
+        --color-line: rgba(255, 255, 255, 0.08);
+        --color-brand: #E11D48;
+        --color-brand2: #881337;
+        --color-good: #10B981;
+        --color-bad: #EF4444;
+        --color-warn: #F59E0B;
+        --color-muted: #9CA3AF;
+        --color-text-main: #F3F4F6;
+        --glass-blur: 6px;
+        --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
       }
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-      ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+      [data-theme='light'] {
+        /* Premium Light Theme - Frosted */
+        --color-bg0: #F0F2F5;
+        --color-bg1: rgba(255, 255, 255, 0.7);
+        --color-card: rgba(255, 255, 255, 0.5);
+        --color-line: rgba(0, 0, 0, 0.06);
+        --color-brand: #E11D48;
+        --color-brand2: #9F1239;
+        --color-good: #059669;
+        --color-bad: #DC2626;
+        --color-warn: #D97706;
+        --color-muted: #6B7280;
+        --color-text-main: #111827;
+        --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      body {
+        background-color: var(--color-bg0);
+        color: var(--color-text-main);
+        font-family: 'Inter', sans-serif;
+        transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      /* Noise Texture Overlay */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+        opacity: 0.03;
+        pointer-events: none;
+        z-index: 10000;
+      }
+
+      /* Fixed mapping for Light Mode legacy classes */
+      [data-theme='light'] .text-white { color: var(--color-text-main) !important; }
+      [data-theme='light'] .text-muted { color: var(--color-muted) !important; }
+      [data-theme='light'] .bg-black { background-color: var(--color-bg0) !important; }
+      [data-theme='light'] .bg-bg1 { background-color: var(--color-bg1) !important; }
+      [data-theme='light'] .bg-bg0 { background-color: var(--color-bg0) !important; }
+      [data-theme='light'] .border-line { border-color: var(--color-line) !important; }
+      [data-theme='light'] .bg-white\/5 { background-color: rgba(0, 0, 0, 0.04) !important; }
+      [data-theme='light'] .bg-white\/10 { background-color: rgba(0, 0, 0, 0.08) !important; }
+      [data-theme='light'] .divide-line > * { border-color: var(--color-line) !important; }
+
+      .font-heading {
+        font-family: 'Impact', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .font-mono {
+        font-family: 'JetBrains Mono', monospace;
+      }
+
+      /* Glass Terminal Utility */
+      .glass-panel {
+        background-color: var(--color-bg1);
+        backdrop-filter: blur(var(--glass-blur));
+        -webkit-backdrop-filter: blur(var(--glass-blur));
+        border: 1px solid var(--color-line);
+        box-shadow: var(--glass-shadow);
+      }
+
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: var(--color-bg0); }
+      ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--color-brand); }
+
+      .clip-corner {
+        clip-path: polygon(
+          0 0, 
+          100% 0, 
+          100% calc(100% - 10px), 
+          calc(100% - 10px) 100%, 
+          0 100%
+        );
+      }
+
+      /* MANDATORY CINEMATIC IMAGE TRANSITION (Stockism Standard) */
+      .stockism-character-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        
+        /* Dormant state */
+        filter: grayscale(70%) brightness(0.9) contrast(0.95);
+        transform: scale(0.97);
+        
+        /* Netflix/Apple TV style easing */
+        transition:
+          filter 480ms cubic-bezier(0.22, 1, 0.36, 1),
+          transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+          
+        will-change: transform, filter;
+      }
+
+      .character-card:hover .stockism-character-image,
+      .character-card:focus-within .stockism-character-image,
+      .stockism-character-image:active,
+      .stockism-character-image:focus-visible {
+        /* Active state */
+        filter: grayscale(0%) brightness(1) contrast(1);
+        transform: scale(1.03);
+      }
+
+      /* Sequential Animation Delays */
+      .anim-delay-1 { animation-delay: 0.08s; }
+      .anim-delay-2 { animation-delay: 0.16s; }
+      .anim-delay-3 { animation-delay: 0.24s; }
+      .anim-delay-4 { animation-delay: 0.32s; }
+      .anim-delay-5 { animation-delay: 0.40s; }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, ::before, ::after {
+          animation-delay: -1ms !important;
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          background-attachment: initial !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0s !important;
+          transition-delay: 0s !important;
+        }
+        .stockism-character-image {
+          transition: none !important;
+          filter: none !important;
+          transform: none !important;
+        }
+      }
     </style>
-  <script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
-    "firebase/": "https://esm.sh/firebase@^12.8.0/"
+    "firebase/": "https://esm.sh/firebase@^12.8.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0"
   }
 }
 </script>
-</head>
+  </head>
   <body>
     <div id="root"></div>
+    <script>
+      const savedTheme = localStorage.getItem('stockism-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
   </body>
 </html>
